@@ -361,6 +361,10 @@ function displayEventData(event){
 
     }, false);
     
+    if(event.state){
+        document.querySelector('#vis h1').textContent = event.state;
+    }
+
     info.querySelector('#data').appendChild(frag);
 
 }
