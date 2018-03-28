@@ -281,3 +281,82 @@ First, we're going to use AJAX (asyncronous JavaScript and XML) to get informati
 This contains the variables that we'll be using to track the state of our app as it's being used.
 
 3. Now we're ready to start getting information from our database. We're not going to read information directly from the database, instead we're going to interact with an API that has been constructed for this workshop.
+
+Copy and paste the following JavaScript just beneath the `// Block 2` statement
+
+```JavaScript
+fetch(`${APIRoot}/devices`)
+    .then(res => {
+        if(res.ok){
+            return res.json();
+        } else {
+            throw res;
+        }
+    })
+    .then(result => {
+        console.log(result);
+
+        // Code Block 3
+        
+    })
+    .catch(err => {
+        console.log('Fetch err:', err);
+    })
+;
+```
+
+4. Click `Done` to save your changes, and then click `Deploy`. 
+5. Somewhere on your web page, right click and then select `Inspect`. Developer tools will open either to the side or bottom of your window. Click the console tab and reload your page. If all has gone well, you should see `{data: Array(10)}`. That's the data about our devices!
+6. Now that we have information about our elevators, we want to display that in our page. We're going to use JavaScript to create some HTML that makes a list of devices that we can get information about. Head back to your Node-RED flow and double click the `Script` template node to edit our JavaScript once again.
+7. Copy and paste the following code just beneath `// Code Block 3`
+
+```JavaScript
+
+const devices = result.data;
+
+devices.forEach(device => {
+    
+    const li = document.createElement('li');
+    li.textContent = device.deviceId;
+    li.dataset.id = device.deviceId;
+    
+    li.addEventListener('click', function(){
+        loading.dataset.active = "true";
+        const elevatorId = this.dataset.id;
+        console.log(elevatorId);
+        
+        document.querySelector('#title').textContent = elevatorId;
+        elevatorHolder.dataset.active = "false";
+        
+        fetch(`${APIRoot}/events/device/${elevatorId}`)
+            .then(res => {
+                if(res.ok){
+                    return res.json();
+                } else {
+                    throw res;
+                }
+            })
+            .then(response => {
+                
+                const data = response.data;
+                currentData = data;
+                console.log(data);
+                
+                displayEventData(data[0]);
+                back.dataset.active = "true";
+                loading.dataset.active = "false";
+                
+            })
+            .catch(err => {
+                console.log('err:', err);
+            })
+        
+    }, false);
+    
+    
+    elevatorHolder.appendChild(li);
+    
+    loading.dataset.active = "false";
+
+});
+```
