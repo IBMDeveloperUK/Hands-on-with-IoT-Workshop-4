@@ -308,7 +308,7 @@ fetch(`${APIRoot}/devices`)
 4. Click `Done` to save your changes, and then click `Deploy`. 
 5. Somewhere on your web page, right click and then select `Inspect`. Developer tools will open either to the side or bottom of your window. Click the console tab and reload your page. If all has gone well, you should see `{data: Array(10)}`. That's the data about our devices!
 6. Now that we have information about our elevators, we want to display that in our page. We're going to use JavaScript to create some HTML that makes a list of devices that we can get information about. Head back to your Node-RED flow and double click the `Script` template node to edit our JavaScript once again.
-7. Copy and paste the following code just beneath `// Code Block 3`
+7. Copy and paste the following code just beneath `// Code Block 3`, and then deploy your changes.
 
 ```JavaScript
 
@@ -319,44 +319,55 @@ devices.forEach(device => {
     const li = document.createElement('li');
     li.textContent = device.deviceId;
     li.dataset.id = device.deviceId;
-    
-    li.addEventListener('click', function(){
-        loading.dataset.active = "true";
-        const elevatorId = this.dataset.id;
-        console.log(elevatorId);
-        
-        document.querySelector('#title').textContent = elevatorId;
-        elevatorHolder.dataset.active = "false";
-        
-        fetch(`${APIRoot}/events/device/${elevatorId}`)
-            .then(res => {
-                if(res.ok){
-                    return res.json();
-                } else {
-                    throw res;
-                }
-            })
-            .then(response => {
-                
-                const data = response.data;
-                currentData = data;
-                console.log(data);
-                
-                displayEventData(data[0]);
-                back.dataset.active = "true";
-                loading.dataset.active = "false";
-                
-            })
-            .catch(err => {
-                console.log('err:', err);
-            })
-        
-    }, false);
-    
+
+    // Code Block 4
     
     elevatorHolder.appendChild(li);
     
     loading.dataset.active = "false";
 
 });
+```
+
+If you reload your web page, you should now see a list of elevators!
+
+8. Now it's time to add functionality to the list. We're going to add some code that will let us select one of the available elevators, and go and get some data about its state over time. For this, we need to add an events listener to each of the list items.
+
+Copy and paste the following code just beneath `//Code Block 4`:
+
+```JavaScript
+
+li.addEventListener('click', function(){
+    loading.dataset.active = "true";
+    const elevatorId = this.dataset.id;
+    console.log(elevatorId);
+    
+    document.querySelector('#title').textContent = elevatorId;
+    elevatorHolder.dataset.active = "false";
+    
+    fetch(`${APIRoot}/events/device/${elevatorId}`)
+        .then(res => {
+            if(res.ok){
+                return res.json();
+            } else {
+                throw res;
+            }
+        })
+        .then(response => {
+            
+            const data = response.data;
+            currentData = data;
+            console.log(data);
+            
+            // Code Block 5
+
+            back.dataset.active = "true";
+            loading.dataset.active = "false";
+            
+        })
+        .catch(err => {
+            console.log('err:', err);
+        })
+    
+}, false);
 ```
