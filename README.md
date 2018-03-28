@@ -387,6 +387,123 @@ back.addEventListener('click', function(){
     infoHolder.dataset.active = "false";
     elevatorHolder.dataset.active = "true";
 }, false);
+
+// Code Block 6
 ```
 
 Deploy those changes. Now when you click on an elevator in the list, we'll still get the data for that elevator, but you're also able to browse back to the list of elevators to see info for a different device.
+
+10. Now it's time to display the data for our elevators. We don't want to write and rewrite code that does the same (or similar) things as other bits of code, so we're going to create two helper functions that we'll use to construct the HTML:
+
+    - `displayEventData`
+        - This function we will call to add data to our page and bind events for interactivity
+    - `constructHTMLForEventData`
+        - This function will parse an individual events data and create and populate the required HTML to display information.
+
+11. First, we'll create the `constructHTMLForEventData` function. Head back to your JavaScript template node and copy and paste the following code on the line after `// Code Block 6`:
+
+```JavaScript
+function constructHTMLForEventData(eventData){
+                            
+    const desirableProperties = {
+        "TS_TIMESTAMP": "Datetime",
+        "motorTemp": "Motor Temperature",
+        "currentFloor": "Current Floor",
+        "doorOpen": "Door Open?",
+        "state": "State",
+        "cabinTemp": "Cabin Temp. (F)",
+        "cabinSpeed": "Speed",
+        "direction": "Direction",
+        "load": "Load (kg)"
+    };
+    
+    const item = eventData;
+    const frag = document.createDocumentFragment();
+
+    const title = document.createElement('h2');
+    title.textContent = 'Data'
+
+    const range = document.createElement('input');
+    range.setAttribute('type', 'range');
+
+    frag.appendChild(title);
+    frag.appendChild(range);
+    
+    Object.keys(desirableProperties).forEach(key => {
+
+        const value = item[key];
+        
+        if(value){
+            
+            const li = document.createElement('li');
+            const strong = document.createElement('strong');
+            const p = document.createElement('p');
+            
+            strong.textContent = desirableProperties[key] + ":";
+            p.textContent = item[key];
+            
+            li.appendChild(strong);
+            li.appendChild(p);
+            
+            frag.appendChild(li);
+            
+        }
+        
+    })
+    
+    return frag;
+}
+
+// Code Block 7
+
+```
+
+This function takes the data for an individual event, filters the information for the properties that we want to display, and then creates a document fragment (basically a mini DOM) with DOM nodes that contains each bit of useful information.
+
+12. The `constructHTMLForEventData` function isn't called directly by any piece of code that we write, it's used by the `displayEventData` function that we'll trigger in the next few steps. Copy and paste the following code just after `// Code Block 7`:
+
+```JavaScript
+
+function displayEventData(event){
+
+    infoHolder.dataset.active = "true";
+    info.querySelector('#data').innerHTML = "";                    
+
+    const frag = constructHTMLForEventData(event);
+                        
+    const range = frag.querySelector('input[type="range"]');
+    range.value = currentRangeOffset;
+    
+    range.addEventListener('change', function(e){
+        console.log(this.value);
+        
+        currentRangeOffset = this.value;
+
+        const arrayOffset = this.value / 100 * currentData.length | 0
+        console.log( arrayOffset );
+
+        const newData = currentData[ arrayOffset ];
+
+        if(newData){
+            displayEventData(newData);
+        }
+
+    }, false);
+    
+    info.querySelector('#data').appendChild(frag);
+
+}
+```
+This function, though shorter than the `constructHTMLForEventData`, does a little bit more. Having called the `constructHTMLForEventData` function, `displayEventData` then uses a querySelector to retrieve the range input which we'll use to scrub through the event data in our UI. Once it has a reference to that, it binds an event listener to the input that will trigger whenever the user drags it to select a new point in time.
+
+13. We're almost very ready to to view our data! Just one more line of code to copy and paste and then we're good to go! Grab the following line and paste it on the line just after `// Code Block 5`
+
+```JavaScript
+    displayEventData(data[0]);
+```
+
+Deploy your app, reload the page, select an elevator and see the individual event data for this elevator!
+
+## That's all folks!
+
+We've built a web app the view historical IoT data. Of course, the application can take any form - it could be a mobile phone or desktop app, we've built a web becuase it's a great, accessible technology.
