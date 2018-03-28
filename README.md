@@ -45,7 +45,7 @@ Create a web app to interact with a datastore of historical IoT sensor data (fro
     - Click `Done` to save your changes
 8. Click the final `template` node and configure it as follows, but do not click `Done`:
     - Set the `Name` value to 'HTML'
-9. Before you close the tab, copy and paste the following code into the `Template` text area, and then click `Done` to save your changes.
+9. Before you close the tab, copy and paste the following code into the `Template` text area (replacing what is already there), and then click `Done` to save your changes.
 
 ```
 <!DOCTYPE html>
