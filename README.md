@@ -371,3 +371,22 @@ li.addEventListener('click', function(){
     
 }, false);
 ```
+
+Deploy your changes, and reload your web page. If you've closed them, reopen your developer tools by right-clicking on the page and clicking `inpsect` then select the 'Console' tab. Now, when you click on an elevator in the list, the list will be replaced by a loading wheel and our code will go and get all of the events for the elevator that have ever occured. In our console window something like the following should be returned after a few seconds:
+```
+(6408) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, …]
+```
+
+That's all of the data for this elevator 🎉
+
+9. So let's do something with it! Before we go any further, we need to create a few helper functions to help us navigate around the app - namely, a back button. Right back at the start of our JavaScript, there's a variable `currentDataOffset`, copy and paste the following code, just after that line
+
+```JavaScript
+back.addEventListener('click', function(){
+    this.dataset.active = "false";
+    infoHolder.dataset.active = "false";
+    elevatorHolder.dataset.active = "true";
+}, false);
+```
+
+Deploy those changes. Now when you click on an elevator in the list, we'll still get the data for that elevator, but you're also able to browse back to the list of elevators to see info for a different device.
