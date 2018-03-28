@@ -10,6 +10,15 @@ Create a web app to interact with a datastore of historical IoT sensor data (fro
 1. Either a laptop with Node-RED installed **OR** An IBM Cloud account with the Node-RED starter, and a computer to access it with
 2. A web browser to view the app that we're building in
 
+**Creating a Node-RED app**
+
+1. [Sign up for an account here](https://ibm.biz/BdZymc)
+2. Verify your account by clicking on the link in the email sent to you
+3. Log in to your IBM Cloud account
+4. Click on "Catalog" on the top-right corner
+5. Search and select "Node-RED Starter" 
+6. Give a unique name to your app and click "Create"
+
 ## Setting up the web app in Node-RED
 
 1. Head to your Node-RED instance (either http://localhost:1880 or your Node-RED started URL) and create a new flow.
@@ -507,3 +516,5 @@ Deploy your app, reload the page, select an elevator and see the individual even
 ## That's all folks!
 
 We've built a web app the view historical IoT data. Of course, the application can take any form - it could be a mobile phone or desktop app, we've built a web becuase it's a great, accessible technology.
+
+## Addendum
