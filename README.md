@@ -315,7 +315,7 @@ fetch(`${APIRoot}/devices`)
 ```
 
 4. Click `Done` to save your changes, and then click `Deploy`. 
-5. Somewhere on your web page, right click and then select `Inspect`. Developer tools will open either to the side or bottom of your window. Click the console tab and reload your page. If all has gone well, you should see `{data: Array(10)}`. That's the data about our devices!
+5. Somewhere on your web page, right click and then select `Inspect`. Developer tools will open either to the side or bottom of your window. Click the console tab and reload your page. If all has gone well, you should see `{data: Array(10)}`. That's the data about our devices! If you want to look at the information contained within, you can click on the data to expand the view.
 6. Now that we have information about our elevators, we want to display that in our page. We're going to use JavaScript to create some HTML that makes a list of devices that we can get information about. Head back to your Node-RED flow and double click the `Script` template node to edit our JavaScript once again.
 7. Copy and paste the following code just beneath `// Code Block 3`, and then deploy your changes.
 
